@@ -1,1 +1,4 @@
 plots/*
+venv/
+__pycache__/
+tmp_input_file.pl/

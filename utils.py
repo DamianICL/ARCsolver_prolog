@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import subprocess
-SICSTUS_PATH = '/usr/bin/sicstus'
+SICSTUS_PATH = '/usr/local/sicstus4.8.0/bin/sicstus'
 
 tasks = {
     "lines": "0a938d79.json",
