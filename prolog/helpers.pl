@@ -85,3 +85,36 @@ row_colour([_, (X1, _, C1)], X2, Step, Colour) :-
     !,
     Colour = C1.
 row_colour(_, _, _, black).
+
+unzip3([], [], [], []).
+unzip3([(X, Y, Z) | Rest], [X | Xs], [Y | Ys], [Z | Zs]) :-
+    unzip3(Rest, Xs, Ys, Zs).
+
+in_square((X, Y)) :-
+    which_coloured(Colours),
+    unzip3(Colours, Xs, Ys, _),
+    max(Xs, MaxX),
+    max(Ys, MaxY),
+    min(Xs, MinX),
+    min(Ys, MinY),
+    X < MaxX,
+    Y < MaxY,
+    X > MinX,
+    Y > MinY.
+
+num_grey_adjacent_tiles((X, Y), Grey):-
+    findall((X1, Y1), ((X1 is X, Y1 is Y - 1, input_colour(X1, Y1, grey));
+                      (X1 is X, Y1 is Y + 1, input_colour(X1, Y1, grey));
+                      (X1 is X + 1, Y1 is Y, input_colour(X1, Y1, grey));
+                      (X1 is X - 1, Y1 is Y, input_colour(X1, Y1, grey))), Greys
+                      ),
+    length(Greys, Grey).
+
+in_line((X, Y), _, (X, Y)).
+
+in_line((X, Y), (D, D1), Square):-
+    row(X),
+    col(Y),
+    NewX is X + D,
+    NewY is Y + D1,
+    in_line((NewX, NewY), (D, D1), Square).
