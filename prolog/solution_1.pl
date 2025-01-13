@@ -7,7 +7,8 @@ output_colour(Row,Column,Colour):-
      is_col(Starts),
      !,
      distance_apart(Starts, Step),
-     column_colour(Starts, Column, Step, Colour).
+     Starts = [(X, Y, C), (X1, Y1, C1)],
+     line_colour([(Y, C), (Y1, C1)], Column, Step, Colour).
 
 output_colour(Row,Column,Colour):-
      row(Row),

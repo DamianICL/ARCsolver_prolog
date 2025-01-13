@@ -1,10 +1,24 @@
 % Solution script for part a) of the coursework.
 
-all_rows(Rs):-
-    setof(Rows, X^Y^input_colour(Rows, X, Y), Rs).
+:- dynamic stored_rows/1.
+:- dynamic stored_cols/1.
+:- dynamic stored_which_coloured/1.
 
-all_cols(Cs):-
-    setof(Col, X^Y^input_colour(X, Col, Y), Cs).
+all_rows(Rs) :-
+    stored_rows(Rs), 
+    !.                      
+
+all_rows(Rs) :-            
+    setof(R, X^Y^input_colour(R, X, Y), Rs),
+    asserta(stored_rows(Rs)).
+
+all_cols(Cs) :-
+    stored_cols(Cs),
+    !.
+
+all_cols(Cs) :-
+    setof(C, X^Y^input_colour(X, C, Y), Cs),
+    asserta(stored_cols(Cs)).
 
 row(R):-
     all_rows(Rs),
@@ -37,8 +51,13 @@ max_acc([X | XS], CurrentMax, Max) :-
     NewMax is max(X, CurrentMax),
     max_acc(XS, NewMax, Max).
 
-which_coloured(Colours):-
-    setof((X, Y, Colour) , (input_colour(X, Y, Colour), Colour \= black), Colours).
+which_coloured(Coloured) :-
+    stored_which_coloured(Coloured),
+    !.
+
+which_coloured(Coloured) :-
+    setof((X, Y, Colour), (input_colour(X, Y, Colour), Colour \= black), Coloured),
+    asserta(stored_which_coloured(Coloured)).
 
 edge_row((X, _, _)) :-
     all_rows(Rows),
@@ -85,6 +104,20 @@ row_colour([_, (X1, _, C1)], X2, Step, Colour) :-
     !,
     Colour = C1.
 row_colour(_, _, _, black).
+
+line_colour([(X, _), (X1, _)], X2, _, Colour) :-
+    X2 < min(X, X1),
+    !,
+    Colour = black.
+line_colour([(X, C), _], X2, Step, Colour) :-
+    0 is (X2 - X) mod (Step * 2),
+    !,
+    Colour = C.
+line_colour([_, (X1, C1)], X2, Step, Colour) :-
+    0 is (X2 - X1) mod (Step * 2),
+    !,
+    Colour = C1.
+line_colour(_, _, _, black).
 
 unzip3([], [], [], []).
 unzip3([(X, Y, Z) | Rest], [X | Xs], [Y | Ys], [Z | Zs]) :-

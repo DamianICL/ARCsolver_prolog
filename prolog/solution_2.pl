@@ -1,8 +1,6 @@
 % Solution script for the task 'pour' (data/training/d4f3cd78.json)
 
 output_colour(Row,Column,Colour):-
-    row(Row),
-    col(Column),
     input_colour(Row, Column, grey),
     !,
     Colour = grey.
