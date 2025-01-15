@@ -4,17 +4,17 @@
 :- dynamic stored_cols/1.
 :- dynamic stored_which_coloured/1.
 
-all_rows(Rs) :-
-    stored_rows(Rs), 
-    !.                      
-all_rows(Rs) :-            
+all_rows(Rs):-
+    stored_rows(Rs).                      
+all_rows(Rs):-
+     \+ stored_rows(Rs),            
     setof(R, X^Y^input_colour(R, X, Y), Rs),
     asserta(stored_rows(Rs)).
 
-all_cols(Cs) :-
-    stored_cols(Cs),
-    !.
-all_cols(Cs) :-
+all_cols(Cs):-
+    stored_cols(Cs).
+all_cols(Cs):-
+    \+ stored_cols(Rs),
     setof(C, X^Y^input_colour(X, C, Y), Cs),
     asserta(stored_cols(Cs)).
 
@@ -47,9 +47,10 @@ max_acc([X | XS], CurrentMax, Max) :-
     NewMax is max(X, CurrentMax),
     max_acc(XS, NewMax, Max).
 
+% Returns a list of squares which are not coloured black
 which_coloured(Coloured) :-
-    stored_which_coloured(Coloured),
-    !.
+    stored_which_coloured(Coloured).
 which_coloured(Coloured) :-
+    \+ stored_which_coloured(Coloured),
     setof((X, Y, Colour), (input_colour(X, Y, Colour), Colour \= black), Coloured),
     asserta(stored_which_coloured(Coloured)).

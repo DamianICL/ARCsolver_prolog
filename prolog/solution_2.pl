@@ -4,11 +4,9 @@
 
 output_colour(Row,Column,Colour):-
     input_colour(Row, Column, grey),
-    !,
     Colour = grey.
 output_colour(Row,Column,Colour):-
     in_square((Row, Column)),
-    !,
     Colour = teal.
 output_colour(Row,Column,Colour):-
     input_colour(R, C, black),
@@ -29,9 +27,9 @@ unzip3([(X, Y, Z) | Rest], [X | Xs], [Y | Ys], [Z | Zs]):-
     unzip3(Rest, Xs, Ys, Zs).
 
 bounds(MinX, MaxX, MinY, MaxY) :-
-    stored_bounds(MinX, MaxX, MinY, MaxY), 
-    !.
-bounds(MinX, MaxX, MinY, MaxY) :-
+    stored_bounds(MinX, MaxX, MinY, MaxY).
+bounds(MinX, MaxX, MinY, MaxY):-
+    \+ stored_bounds(MinX, MaxX, MinY, MaxY),
     which_coloured(Colours),
     unzip3(Colours, Xs, Ys, _),
     min(Xs, MinX),
@@ -54,9 +52,9 @@ num_grey_adjacent_tiles((X, Y), Grey):-
     Grey is G1 + G2 + G3 + G4.
 
 is_grey(X, Y, 1) :-
-    input_colour(X, Y, grey),
-    !.
+    input_colour(X, Y, grey).
 is_grey(_, _, 0).
+
 
 draw_line((X, Y), _, (X, Y)).
 draw_line((X, Y), (D, D1), Square):-
