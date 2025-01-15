@@ -1,7 +1,5 @@
 % Solution script for the task 'pour' (data/training/d4f3cd78.json)
 
-:- dynamic stored_bounds/4.
-
 output_colour(Row,Column,Colour):-
     input_colour(Row, Column, grey),
     Colour = grey.
@@ -26,17 +24,13 @@ unzip3([], [], [], []).
 unzip3([(X, Y, Z) | Rest], [X | Xs], [Y | Ys], [Z | Zs]):-
     unzip3(Rest, Xs, Ys, Zs).
 
-bounds(MinX, MaxX, MinY, MaxY) :-
-    stored_bounds(MinX, MaxX, MinY, MaxY).
 bounds(MinX, MaxX, MinY, MaxY):-
-    \+ stored_bounds(MinX, MaxX, MinY, MaxY),
     which_coloured(Colours),
     unzip3(Colours, Xs, Ys, _),
     min(Xs, MinX),
     max(Xs, MaxX),
     min(Ys, MinY),
-    max(Ys, MaxY),
-    asserta(stored_bounds(MinX, MaxX, MinY, MaxY)).
+    max(Ys, MaxY).
 
 in_square((X, Y)) :-
     bounds(MinX, MaxX, MinY, MaxY),
@@ -54,7 +48,6 @@ num_grey_adjacent_tiles((X, Y), Grey):-
 is_grey(X, Y, 1) :-
     input_colour(X, Y, grey).
 is_grey(_, _, 0).
-
 
 draw_line((X, Y), _, (X, Y)).
 draw_line((X, Y), (D, D1), Square):-

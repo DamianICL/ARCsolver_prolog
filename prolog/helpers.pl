@@ -1,30 +1,16 @@
 % Solution script for part a) of the coursework.
-
-:- dynamic stored_rows/1.
-:- dynamic stored_cols/1.
-:- dynamic stored_which_coloured/1.
-
-all_rows(Rs):-
-    stored_rows(Rs).                      
-all_rows(Rs):-
-     \+ stored_rows(Rs),            
-    setof(R, X^Y^input_colour(R, X, Y), Rs),
-    asserta(stored_rows(Rs)).
+                     
+all_rows(Rs):-          
+    setof(R, X^Y^input_colour(R, X, Y), Rs).
 
 all_cols(Cs):-
-    stored_cols(Cs).
-all_cols(Cs):-
-    \+ stored_cols(Rs),
-    setof(C, X^Y^input_colour(X, C, Y), Cs),
-    asserta(stored_cols(Cs)).
+    setof(C, X^Y^input_colour(X, C, Y), Cs).
 
 row(R):-
-    all_rows(Rs),
-    member(R, Rs).
+    input_colour(R, 0, _).
 
 col(C):-
-    all_cols(Cs),
-    member(C, Cs).
+    input_colour(0, C, _).
 
 nrows(NR):-
     all_rows(Rs),
@@ -49,8 +35,4 @@ max_acc([X | XS], CurrentMax, Max) :-
 
 % Returns a list of squares which are not coloured black
 which_coloured(Coloured) :-
-    stored_which_coloured(Coloured).
-which_coloured(Coloured) :-
-    \+ stored_which_coloured(Coloured),
-    setof((X, Y, Colour), (input_colour(X, Y, Colour), Colour \= black), Coloured),
-    asserta(stored_which_coloured(Coloured)).
+    setof((X, Y, Colour), (input_colour(X, Y, Colour), Colour \= black), Coloured).
