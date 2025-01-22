@@ -9,11 +9,9 @@ You will need to install Sicstus to run the program:
 https://sicstus.sics.se/download4.html
 
 ### Python
-We are providing you with a python virtual environment '/vol/lab/ml/venv_tests'.
+Tests run on python virtual environment '/vol/lab/ml/venv_tests'.
 
-You could also create your own virtual environment and install numpy, pandas and matplotlib. 
-
-The coursework was tested with python3.8. You are advised to use the same, though later versions will probably work.
+You can install numpy, pandas and matplotlib via the requirements file. 
 
 ## Usage
 To start with, activate the virtual environment and run `solution_tests.py`, which will generate images in the `plots` directory demonstrating the tasks.
